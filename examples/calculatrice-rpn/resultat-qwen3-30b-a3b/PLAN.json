@@ -1,0 +1,35 @@
+[
+  {
+    "title": "Implement RPN evaluation function",
+    "goal": "Create rpn.py with evaluate function handling operators and numbers",
+    "check": "python3 -c \"import rpn; assert hasattr(rpn, 'evaluate')\"",
+    "status": "à faire",
+    "attempts": 0,
+    "model": "",
+    "seconds": 0.0,
+    "summary": "",
+    "last_check": ""
+  },
+  {
+    "title": "Add command-line interface",
+    "goal": "Make rpn.py executable for CLI input",
+    "check": "python3 rpn.py \"3 4 +\" | grep -q \"7.0\"",
+    "status": "à faire",
+    "attempts": 0,
+    "model": "",
+    "seconds": 0.0,
+    "summary": "",
+    "last_check": ""
+  },
+  {
+    "title": "Write unit tests",
+    "goal": "Create test_rpn.py covering all cases with unittest",
+    "check": "python3 -m unittest -q",
+    "status": "à faire",
+    "attempts": 0,
+    "model": "",
+    "seconds": 0.0,
+    "summary": "",
+    "last_check": ""
+  }
+]

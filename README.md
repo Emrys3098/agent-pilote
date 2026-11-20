@@ -23,7 +23,7 @@ bibliothèque standard seulement), pour que n'importe qui puisse la tester sur s
 Prérequis : Linux (ou macOS/WSL, sans bac à sable bwrap), Python 3.10+, [Ollama](https://ollama.com).
 
 ```bash
-ollama pull qwen3:8b                 # ou qwen3:4b sur une petite machine
+ollama pull qwen3:30b-a3b            # modèle testé (18 Go) ; qwen3:4b sur une petite machine
 git clone https://github.com/Emrys3098/agent-pilote.git && cd agent-pilote
 python3 -m agentpilote demo          # Pilote crée, teste et livre une calculatrice RPN
 ```
@@ -32,10 +32,14 @@ Pilote planifie le projet, l'exécute étape par étape dans le bac à sable, v�
 par les tests et écrit dans `demo_output/` : le code produit, `PLAN.json`, `PASSATION.md` et
 `RAPPORT.md` (statut, tentatives, modèle utilisé et durée de chaque étape).
 
-Un exemple de résultat réel est fourni dans [examples/calculatrice-rpn/resultat-qwen3-4b](examples/calculatrice-rpn/resultat-qwen3-4b) :
-avec le petit modèle `qwen3:4b`, Pilote a réussi les 3 étapes du premier coup (8 tests verts, 18 min sur une machine
-déjà occupée). On y voit aussi les limites d'un modèle de 4 milliards de paramètres (message « Erreur : Erreur : » en double) :
-d'où l'intérêt d'un modèle plus gros, et donc d'un matériel plus puissant.
+Deux résultats réels, obtenus sur la station, sont fournis dans [examples/calculatrice-rpn](examples/calculatrice-rpn) :
+
+| Modèle | Résultat | Durée | Ce qu'on y voit |
+|---|---|---|---|
+| [`qwen3:30b-a3b`](examples/calculatrice-rpn/resultat-qwen3-30b-a3b) (recommandé) | 3/3 étapes, 8 tests verts, messages d'erreur propres | 17 min, 60 jetons/s | à l'étape 3, le modèle **affirme à tort** que les tests passent : le contrôle du Pilote le dément, la tentative suivante corrige |
+| [`qwen3:4b`](examples/calculatrice-rpn/resultat-qwen3-4b) | 3/3 étapes du premier coup, 8 tests verts | 18 min (machine partagée) | limites d'un petit modèle : message « Erreur : Erreur : » en double |
+
+C'est tout l'intérêt du Pilote : ne jamais croire l'agent sur parole, mais vérifier chaque étape.
 
 Les tests du framework tournent **sans aucun modèle** (faux modèle scripté) :
 
@@ -54,12 +58,12 @@ python3 -m agentpilote chat "!!deep pourquoi ce test échoue ?"   # une demande 
 | Variable | Rôle | Défaut |
 |---|---|---|
 | `AP_BASE_URL` | API compatible OpenAI (Ollama, llama.cpp, vLLM…) | `http://localhost:11434/v1` |
-| `AP_MODEL` | modèle rapide, utilisé par défaut | `qwen3:8b` |
+| `AP_MODEL` | modèle rapide, utilisé par défaut | `qwen3:30b-a3b` |
 | `AP_DEEP_MODEL` | modèle « profond » (escalade, `!!deep`) | = modèle rapide |
 | `AP_DEEP_BASE_URL` | serveur du modèle profond s'il est ailleurs | = `AP_BASE_URL` |
 | `AP_NTFY_URL` | notification à chaque étape (ex. sujet ntfy sur votre serveur) | désactivé |
 
-Exemple proche de la station réelle : `AP_MODEL=qwen3:30b-a3b AP_DEEP_MODEL=gpt-oss:120b`.
+Petite machine : `AP_MODEL=qwen3:4b python3 -m agentpilote demo`. Avec un palier profond : `AP_DEEP_MODEL=gpt-oss:120b`.
 
 ## Comment ça marche
 
@@ -118,7 +122,7 @@ before moving on, **escalation** to a stronger model after repeated failures, a 
 and a **timed report**. Zero dependencies (Python 3.10+ standard library).
 
 ```bash
-ollama pull qwen3:8b && python3 -m agentpilote demo   # builds, tests and ships an RPN calculator
+ollama pull qwen3:30b-a3b && python3 -m agentpilote demo   # builds, tests and ships an RPN calculator
 python3 -m unittest -v                                 # framework tests, no model needed
 ```
 

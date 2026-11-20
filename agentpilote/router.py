@@ -34,7 +34,7 @@ class Router:
     def from_env(cls) -> "Router":
         base = os.environ.get("AP_BASE_URL", "http://localhost:11434/v1")
         key = os.environ.get("AP_API_KEY", "local")
-        fast = LLM(base, os.environ.get("AP_MODEL", "qwen3:8b"), key)
+        fast = LLM(base, os.environ.get("AP_MODEL", "qwen3:30b-a3b"), key)
         deep_model = os.environ.get("AP_DEEP_MODEL")
         deep = LLM(os.environ.get("AP_DEEP_BASE_URL", base), deep_model, key) if deep_model else None
         return cls(fast, deep)
