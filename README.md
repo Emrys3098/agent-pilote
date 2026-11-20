@@ -37,6 +37,7 @@ Deux résultats réels, obtenus sur la station, sont fournis dans [examples/calc
 | Modèle | Résultat | Durée | Ce qu'on y voit |
 |---|---|---|---|
 | [`qwen3:30b-a3b`](examples/calculatrice-rpn/resultat-qwen3-30b-a3b) (recommandé) | 3/3 étapes, 8 tests verts, messages d'erreur propres | 17 min, 60 jetons/s | à l'étape 3, le modèle **affirme à tort** que les tests passent : le contrôle du Pilote le dément, la tentative suivante corrige |
+| [Qwen3.8-Flash-Next](examples/calculatrice-rpn/resultat-qwen3.8-flash-next) (125B, modèle principal de la station, via Halogen) | 3/3 étapes **du premier coup**, messages en français | 10 min | le plus rapide et le plus propre : c'est ce modèle que vise la station |
 | [`qwen3:4b`](examples/calculatrice-rpn/resultat-qwen3-4b) | 3/3 étapes du premier coup, 8 tests verts | 18 min (machine partagée) | limites d'un petit modèle : message « Erreur : Erreur : » en double |
 
 C'est tout l'intérêt du Pilote : ne jamais croire l'agent sur parole, mais vérifier chaque étape.

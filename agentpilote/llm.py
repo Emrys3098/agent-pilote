@@ -63,6 +63,9 @@ class LLM:
         try:
             with urllib.request.urlopen(req, timeout=self.timeout) as resp:
                 data = json.load(resp)
+        except TimeoutError as exc:
+            self.usage.add(Usage(1, 0, 0, time.monotonic() - t0))
+            raise RuntimeError(f"pas de réponse du modèle après {self.timeout:.0f} s") from exc
         except urllib.error.URLError as exc:
             raise RuntimeError(
                 f"Modèle injoignable sur {self.base_url} ({exc}). "

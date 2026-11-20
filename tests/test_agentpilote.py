@@ -164,6 +164,20 @@ class TestPilote(TempDir):
         self.assertEqual(len(second_step_context), 2)  # système + tâche : aucun historique de l'étape A
         self.assertIn("résumé A", second_step_context[1]["content"])
 
+    def test_model_timeout_is_a_failed_attempt_not_a_crash(self):
+        def blocked(_messages):
+            raise RuntimeError("pas de réponse du modèle après 900 s")
+        steps = [Step("A", "a", "test -f a.txt")]
+        fast = FakeLLM("rapide", [
+            blocked,
+            tool_msg(call("write_file", path="a.txt", content="ok")),
+            tool_msg(call("finish", summary="a.txt créé")),
+        ])
+        report = Pilote(Router(fast), self.dir, max_attempts=2, verbose=False).run("spec", steps=steps)
+        self.assertTrue(report.success)
+        self.assertEqual(report.steps[0].attempts, 2)
+        self.assertIn("interrompue", fast.seen[1][1]["content"])  # la 2e tentative sait pourquoi
+
     def test_stops_on_failed_step(self):
         steps = [Step("A", "a", "false"), Step("B", "b", "true")]
         fast = FakeLLM("rapide", [tool_msg(call("finish", summary="?"))] * 2)

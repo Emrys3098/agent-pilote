@@ -144,7 +144,14 @@ class Pilote:
             self.say(f"-- tentative {attempt} (modèle : {llm.name})")
             task = self.build_task(spec, steps, idx, feedback)
             system = STEP_SYSTEM.format(extra=("\n" + self.extra_rules) if self.extra_rules else "")
-            result = run_agent(llm, system, task, self.toolbox, self.max_turns, on_event=self.say)
+            try:
+                result = run_agent(llm, system, task, self.toolbox, self.max_turns, on_event=self.say)
+            except RuntimeError as exc:
+                # modèle bloqué (réponse trop longue) ou injoignable : tentative ratée, pas plantage du projet
+                self.say(f"   modèle en échec : {exc}")
+                feedback = (f"La tentative précédente a été interrompue ({exc}). "
+                            "Avance par petites actions courtes et vérifie avec `run`.")
+                continue
             check = self.sandbox.run(step.check)
             step.last_check = check.short()[-1500:]
             if check.ok:

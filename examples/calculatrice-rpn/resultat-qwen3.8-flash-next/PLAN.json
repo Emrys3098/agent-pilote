@@ -1,0 +1,35 @@
+[
+  {
+    "title": "Implémenter l'évaluateur RPN",
+    "goal": "Créer rpn.py avec evaluate(expression) pour +, -, *, /, nombres décimaux/négatifs, et lever ValueError pour les cas d'erreur.",
+    "check": "python3 - <<'PY'\nimport rpn\nassert rpn.evaluate('3 4 + 2 *') == 14.0\nassert rpn.evaluate('-2.5 2 *') == -5.0\nassert rpn.evaluate('1.5 2 +') == 3.5\nassert rpn.evaluate('3 4 -') == -1.0\nassert rpn.evaluate('8 2 /') == 4.0\nfor expr in ['', '3 +', '3 4 + 5', '3 x', '3 0 /']:\n    try:\n        rpn.evaluate(expr)\n    except ValueError as exc:\n        assert str(exc)\n    else:\n        raise AssertionError(expr)\nPY",
+    "status": "à faire",
+    "attempts": 0,
+    "model": "",
+    "seconds": 0.0,
+    "summary": "",
+    "last_check": ""
+  },
+  {
+    "title": "Ajouter l'interface en ligne de commande",
+    "goal": "Permettre `python3 rpn.py \"3 4 +\"` pour afficher le résultat, afficher `Erreur : <message>` et renvoyer le code 1 en cas d'erreur.",
+    "check": "python3 rpn.py '3 4 +' | grep -qx '7.0' && python3 rpn.py '3 0 /' 2>&1 | grep -q '^Erreur : ' && ! python3 rpn.py '3 0 /' >/dev/null 2>&1",
+    "status": "à faire",
+    "attempts": 0,
+    "model": "",
+    "seconds": 0.0,
+    "summary": "",
+    "last_check": ""
+  },
+  {
+    "title": "Ajouter les tests unittest",
+    "goal": "Créer test_rpn.py avec unittest couvrant les cas normaux, chaque cas d'erreur et l'interface en ligne de commande.",
+    "check": "python3 -m unittest test_rpn -v 2>&1 | grep -q 'Ran [1-9]' && python3 -m unittest -q && python3 rpn.py '3 4 +' | grep -qx '7.0' && ! python3 rpn.py '3 0 /' >/dev/null 2>&1",
+    "status": "à faire",
+    "attempts": 0,
+    "model": "",
+    "seconds": 0.0,
+    "summary": "",
+    "last_check": ""
+  }
+]
