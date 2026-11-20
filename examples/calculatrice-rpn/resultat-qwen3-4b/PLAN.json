@@ -1,0 +1,35 @@
+[
+  {
+    "title": "Implement RPN evaluation function",
+    "goal": "Create rpn.py with evaluate function that handles basic RPN expressions",
+    "check": "python3 -c \"import rpn; print(rpn.evaluate('3 4 +'))\"",
+    "status": "à faire",
+    "attempts": 0,
+    "model": "",
+    "seconds": 0.0,
+    "summary": "",
+    "last_check": ""
+  },
+  {
+    "title": "Add CLI interface",
+    "goal": "Make rpn.py executable as a command-line tool that processes RPN expressions",
+    "check": "python3 rpn.py \"3 4 +\" | grep -q '7.0'",
+    "status": "à faire",
+    "attempts": 0,
+    "model": "",
+    "seconds": 0.0,
+    "summary": "",
+    "last_check": ""
+  },
+  {
+    "title": "Write unit tests",
+    "goal": "Create test_rpn.py with unittest tests covering normal cases, errors, and CLI behavior",
+    "check": "python3 -m unittest -q",
+    "status": "à faire",
+    "attempts": 0,
+    "model": "",
+    "seconds": 0.0,
+    "summary": "",
+    "last_check": ""
+  }
+]
